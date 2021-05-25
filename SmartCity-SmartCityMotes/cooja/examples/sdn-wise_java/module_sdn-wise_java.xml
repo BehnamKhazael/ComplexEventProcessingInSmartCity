@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_sdn-wise_java" default="compile.module.sdn-wise_java">
+  <dirname property="module.sdn-wise_java.basedir" file="${ant.file.module_sdn-wise_java}"/>
+  
+  <property name="module.jdk.home.sdn-wise_java" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.sdn-wise_java" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.sdn-wise_java" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.sdn-wise_java" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="sdn-wise_java.output.dir" value="${module.sdn-wise_java.basedir}/build/production/sdn-wise_java"/>
+  <property name="sdn-wise_java.testoutput.dir" value="${module.sdn-wise_java.basedir}/build/test/sdn-wise_java"/>
+  
+  <path id="sdn-wise_java.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="sdn-wise_java.module.production.classpath">
+    <path refid="${module.jdk.classpath.sdn-wise_java}"/>
+    <path refid="library.sdn-wise-api-3.0.6.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.cooja.classpath"/>
+    <path refid="library.log4j-core-2.14.0.classpath"/>
+    <path refid="library.log4j-api-2.14.0.classpath"/>
+    <path refid="library.json-20090211.classpath"/>
+    <path refid="library.gson-2.3.1.classpath"/>
+    <path refid="library.commons-pool-1.6.classpath"/>
+    <path refid="library.commons-dbcp-1.4.classpath"/>
+  </path>
+  
+  <path id="sdn-wise_java.runtime.production.module.classpath">
+    <pathelement location="${sdn-wise_java.output.dir}"/>
+    <path refid="library.sdn-wise-api-3.0.6.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.cooja.classpath"/>
+    <path refid="library.log4j-core-2.14.0.classpath"/>
+    <path refid="library.log4j-api-2.14.0.classpath"/>
+    <path refid="library.json-20090211.classpath"/>
+    <path refid="library.gson-2.3.1.classpath"/>
+    <path refid="library.commons-pool-1.6.classpath"/>
+    <path refid="library.commons-dbcp-1.4.classpath"/>
+  </path>
+  
+  <path id="sdn-wise_java.module.classpath">
+    <path refid="${module.jdk.classpath.sdn-wise_java}"/>
+    <pathelement location="${sdn-wise_java.output.dir}"/>
+    <path refid="library.sdn-wise-api-3.0.6.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.cooja.classpath"/>
+    <path refid="library.log4j-core-2.14.0.classpath"/>
+    <path refid="library.log4j-api-2.14.0.classpath"/>
+    <path refid="library.json-20090211.classpath"/>
+    <path refid="library.gson-2.3.1.classpath"/>
+    <path refid="library.commons-pool-1.6.classpath"/>
+    <path refid="library.commons-dbcp-1.4.classpath"/>
+  </path>
+  
+  <path id="sdn-wise_java.runtime.module.classpath">
+    <pathelement location="${sdn-wise_java.testoutput.dir}"/>
+    <pathelement location="${sdn-wise_java.output.dir}"/>
+    <path refid="library.sdn-wise-api-3.0.6.classpath"/>
+    <path refid="library.jdom.classpath"/>
+    <path refid="library.cooja.classpath"/>
+    <path refid="library.log4j-core-2.14.0.classpath"/>
+    <path refid="library.log4j-api-2.14.0.classpath"/>
+    <path refid="library.json-20090211.classpath"/>
+    <path refid="library.gson-2.3.1.classpath"/>
+    <path refid="library.commons-pool-1.6.classpath"/>
+    <path refid="library.commons-dbcp-1.4.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.sdn-wise_java">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.sdn-wise_java">
+    <patternset refid="excluded.from.module.sdn-wise_java"/>
+  </patternset>
+  
+  <path id="sdn-wise_java.module.sourcepath">
+    <dirset dir="${module.sdn-wise_java.basedir}">
+      <include name="java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.sdn-wise_java" depends="compile.module.sdn-wise_java.production,compile.module.sdn-wise_java.tests" description="Compile module sdn-wise_java"/>
+  
+  <target name="compile.module.sdn-wise_java.production" depends="register.custom.compilers" description="Compile module sdn-wise_java; production classes">
+    <mkdir dir="${sdn-wise_java.output.dir}"/>
+    <javac2 destdir="${sdn-wise_java.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sdn-wise_java}/javac">
+      <compilerarg line="${compiler.args.sdn-wise_java}"/>
+      <bootclasspath refid="sdn-wise_java.module.bootclasspath"/>
+      <classpath refid="sdn-wise_java.module.production.classpath"/>
+      <src refid="sdn-wise_java.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.sdn-wise_java"/>
+    </javac2>
+    
+    <copy todir="${sdn-wise_java.output.dir}">
+      <fileset dir="${module.sdn-wise_java.basedir}/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.sdn-wise_java.tests" depends="register.custom.compilers,compile.module.sdn-wise_java.production" description="compile module sdn-wise_java; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.sdn-wise_java" description="cleanup module">
+    <delete dir="${sdn-wise_java.output.dir}"/>
+    <delete dir="${sdn-wise_java.testoutput.dir}"/>
+  </target>
+</project>
